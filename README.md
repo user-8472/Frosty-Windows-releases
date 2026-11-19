@@ -82,6 +82,8 @@ online to:
   phone's built-in address lookup (usually Google's) for the name of that spot;
 - check GitHub for new versions of the app.
 
+The full details: [Privacy policy](https://user-8472.github.io/Frosty-Windows-releases/privacy).
+
 ## Support Frosty Windows
 
 Frosty Windows is free, has no ads and doesn't track you, and I plan to keep it that way. If it has
