@@ -5,11 +5,24 @@ morning, and wakes you early enough to clear it before you leave. It's free, wit
 and no tracking.
 
 > **Android phones only.** There's no iPhone version.
->
-> Frosty Windows isn't in the Google Play Store yet, so installing it takes a few extra taps compared
-> with a Play Store app. It takes about two minutes; the steps are below.
 
-## Install it
+## Get it from Google Play (testing now)
+
+Frosty Windows is being tested on Google Play before it's open to everyone. To join the test, email
+**[frostywindowsapp@gmail.com](mailto:frostywindowsapp@gmail.com?subject=Please%20add%20me%20to%20the%20Frosty%20Windows%20test)**
+from the Google account you use on your Android phone. You'll get a link back; open it on your
+phone, tap **Become a tester**, then install Frosty Windows from the Play Store. Google Play keeps it
+up to date from then on, and it can't be found by searching the Play Store until the test is over.
+
+Already using the copy from this page? Join the test the same way: installing from Google Play keeps
+your alerts and settings.
+
+## Or install it directly
+
+Prefer not to wait? You can install it straight from this page instead. It takes a few extra taps
+compared with a Play Store app, about two minutes; the steps are below.
+
+### Install steps
 
 Do these steps **on your Android phone** (not on a computer).
 
@@ -26,7 +39,7 @@ Do these steps **on your Android phone** (not on a computer).
    **More details**, then **Install anyway**, or tap **Scan app** and then **Install**.
 7. Tap **Open**.
 
-### Samsung phones: Auto Blocker
+#### Samsung phones: Auto Blocker
 
 Newer Samsung phones have **Auto Blocker**, which blocks every app that isn't from the Play Store or
 the Galaxy Store. If the install is blocked and the message mentions Auto Blocker:
