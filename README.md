@@ -82,6 +82,13 @@ online to:
   phone's built-in address lookup (usually Google's) for the name of that spot;
 - check GitHub for new versions of the app.
 
+## Support Frosty Windows
+
+Frosty Windows is free, has no ads and doesn't track you, and I plan to keep it that way. If it has
+saved you from missing your morning coffee, you can buy me one on
+**[Ko-fi](https://ko-fi.com/frostywindows)**. Any amount is welcome, and nothing in the app changes
+either way. Another way to help: tell a friend who's always late on frosty mornings.
+
 ## Questions, problems or ideas
 
 Email **frostywindowsapp@gmail.com**, or in the app: **⋮ menu → Settings → Email Frosty Windows**.
