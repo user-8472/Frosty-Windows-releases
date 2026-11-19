@@ -14,9 +14,8 @@ from the Google account you use on your Android phone. You'll get a link back; o
 phone, tap **Become a tester**, then install Frosty Windows from the Play Store. Google Play keeps it
 up to date from then on, and it can't be found by searching the Play Store until the test is over.
 
-Already using the copy from this page? Join the test the same way, but uninstall this copy before
-installing from Google Play (Play can't install over it). You'll need to set up your alerts again;
-note them down first.
+Already using the copy from this page? Join the test the same way: installing from Google Play keeps
+your alerts and settings.
 
 ## Or install it directly
 
