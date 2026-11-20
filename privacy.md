@@ -4,7 +4,7 @@ title: Privacy policy
 
 # Frosty Windows privacy policy
 
-Effective 18 November 2026.
+Effective 19 November 2026.
 
 Frosty Windows tells you whether you'll need to scrape frost off your car in the morning. It has no
 ads, no accounts and no tracking. This page explains exactly what the app does with information.
@@ -43,6 +43,13 @@ nothing that identifies you.
   browser. Payments happen on Ko-fi, never in the app, and Ko-fi's privacy policy applies there.
 - **Email Frosty Windows** opens your email app with a message to frostywindowsapp@gmail.com. Only
   what you choose to send reaches the developer.
+- **Email a crash report** appears only after the app has hit an error. It opens your email app with
+  a message to frostywindowsapp@gmail.com containing the error, the app version, your phone's maker,
+  model and Android version, and the app's recent activity log (forecast checks and alerts, with your
+  alerts' names and places replaced by "Alert 1", "Alert 2" and so on, and the times in it, such as
+  your commute and alert times, replaced by "[time]"). Until then the details stay on your phone, and you can read or
+  change the message before sending it, or not send it at all. The app never sends crash reports by
+  itself. To have a crash report you sent deleted, email frostywindowsapp@gmail.com.
 - **Share Frosty Windows** opens your phone's share menu with a short message; you choose who gets it.
 
 ## Permissions
