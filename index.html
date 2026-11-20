@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Frosty Windows: know the night before if you'll need to scrape</title>
+<meta name="description" content="Frosty Windows tells you the night before whether you'll need to scrape frost off your car in the morning, and wakes you early enough to clear it. Free, no ads, no account, no tracking. Android.">
+<meta name="theme-color" content="#0F1E3D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Frosty Windows">
+<meta property="og:description" content="Know the night before if you'll need to clear your car windows before you drive. Free for Android, no ads, no tracking.">
+<meta property="og:url" content="https://user-8472.github.io/Frosty-Windows-releases/">
+<meta property="og:image" content="https://user-8472.github.io/Frosty-Windows-releases/og-image.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="500">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+:root {
+  /* App palette: src/theme.ts (light) */
+  --bg: #EEF4FB;
+  --card: #FFFFFF;
+  --text: #13233A;
+  --muted: #5B6B82;
+  --border: #D4DEEB;
+  --accent: #2D6CDF;
+  --accent-text: #FFFFFF;
+  --frost-row: #E6F0FF;
+  --likely-fg: #1F5FBF;  --likely-bg: #DCE9FC;
+  --possible-fg: #8A5A00; --possible-bg: #FDF0D2;
+  --unlikely-fg: #1D7A46; --unlikely-bg: #DCF3E5;
+  --shadow: 0 10px 30px rgba(19, 35, 58, .10), 0 2px 6px rgba(19, 35, 58, .06);
+  /* The icon's night sky, used for the hero in both themes */
+  --night: #0F1E3D;
+  --night-2: #1A2D55;
+  --ice: #C4E2FF;
+  --ice-muted: #9DB4D6;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0E1622;
+    --card: #172234;
+    --text: #E5EDF8;
+    --muted: #94A3B8;
+    --border: #2A3A52;
+    --accent: #5B93F0;
+    --accent-text: #0B1220;
+    --frost-row: #1B2C47;
+    --likely-fg: #9CC3FF;  --likely-bg: #1C3358;
+    --possible-fg: #F5C770; --possible-bg: #3D3018;
+    --unlikely-fg: #8BE0AD; --unlikely-bg: #183B29;
+    --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+    --night: #0B1630;
+    --night-2: #15264A;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-wrap: anywhere;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--accent); }
+a:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+.wrap { width: 100%; max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+.emoji { font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; }
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+  color: #EAF3FF;
+  background:
+    radial-gradient(1.5px 1.5px at 12% 18%, #9DB4D6 99%, transparent) ,
+    radial-gradient(2px 2px at 86% 12%, #9DB4D6 99%, transparent),
+    radial-gradient(1.5px 1.5px at 72% 34%, #9DB4D6 99%, transparent),
+    radial-gradient(2px 2px at 30% 8%, #7F98BF 99%, transparent),
+    radial-gradient(1.5px 1.5px at 94% 52%, #7F98BF 99%, transparent),
+    radial-gradient(1.5px 1.5px at 6% 62%, #7F98BF 99%, transparent),
+    radial-gradient(2px 2px at 62% 14%, #9DB4D6 99%, transparent),
+    linear-gradient(180deg, var(--night) 0%, var(--night-2) 100%);
+  padding: 20px 0 72px;
+}
+.hero::after { /* soft moon glow */
+  content: "";
+  position: absolute;
+  width: 520px; height: 520px;
+  right: -160px; top: -200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(196, 226, 255, .14), rgba(196, 226, 255, 0) 65%);
+  pointer-events: none;
+}
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; position: relative; z-index: 1; }
+.brand { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; font-weight: 700; font-size: 17px; }
+.brand img { width: 34px; height: 34px; border-radius: 9px; }
+.topnav { display: flex; gap: 18px; font-size: 15px; }
+.topnav a { color: var(--ice-muted); text-decoration: none; font-weight: 600; }
+.topnav a:hover { color: #fff; }
+@media (max-width: 520px) { .topnav .hide-sm { display: none; } }
+
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; align-items: center; margin-top: 36px; position: relative; z-index: 1; }
+.hero-icon {
+  width: 112px; height: 112px;
+  border-radius: 26px;
+  box-shadow: 0 0 0 1px rgba(196, 226, 255, .18), 0 18px 40px rgba(0, 0, 0, .45), 0 0 60px rgba(91, 147, 240, .25);
+}
+.hero h1 { font-size: clamp(36px, 9vw, 58px); line-height: 1.05; margin: 22px 0 12px; letter-spacing: -.02em; color: #F4F8FF; }
+.pitch { font-size: clamp(18px, 4.6vw, 22px); line-height: 1.4; color: #C9DAF2; margin: 0 0 24px; max-width: 34ch; }
+.buttons { display: flex; flex-direction: column; gap: 12px; max-width: 420px; }
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 52px; padding: 12px 22px;
+  border-radius: 999px;
+  font-weight: 700; font-size: 16px; text-decoration: none; text-align: center;
+  transition: transform .12s ease, background-color .12s ease, box-shadow .12s ease;
+}
+.btn:active { transform: scale(.98); }
+.btn-primary { background: #5B93F0; color: #0B1220; box-shadow: 0 6px 18px rgba(91, 147, 240, .35); }
+.btn-primary:hover { background: #74A5F4; }
+.btn-secondary { background: rgba(196, 226, 255, .08); color: #EAF3FF; border: 1.5px solid rgba(196, 226, 255, .35); }
+.btn-secondary:hover { background: rgba(196, 226, 255, .16); }
+.btn svg { flex: none; }
+@media (max-width: 400px) { .btn { padding: 12px 14px; font-size: 15px; gap: 8px; } }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 0; padding: 0; list-style: none; }
+.chips li { font-size: 13px; font-weight: 600; color: #C9DAF2; border: 1px solid rgba(196, 226, 255, .22); border-radius: 999px; padding: 5px 12px; }
+.android-note { margin: 14px 0 0; font-size: 14px; color: var(--ice-muted); }
+
+/* Example alert card, styled like the app's home screen */
+.demo { display: flex; justify-content: center; }
+.app-card {
+  width: 100%; max-width: 380px;
+  background: var(--card); color: var(--text);
+  border: 1px solid var(--border); border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .45);
+  transform: rotate(-1.5deg);
+}
+.app-card .row { display: flex; align-items: center; gap: 8px; }
+.app-card .place { font-size: 16px; font-weight: 700; flex: 1; min-width: 0; }
+.app-card .when { font-size: 13px; color: var(--muted); }
+.pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 6px 12px; font-weight: 700; font-size: 14px; }
+.pill.likely { color: var(--likely-fg); background: var(--likely-bg); }
+.pill.possible { color: var(--possible-fg); background: var(--possible-bg); }
+.pill.unlikely { color: var(--unlikely-fg); background: var(--unlikely-bg); }
+.flakes { letter-spacing: 1px; color: var(--likely-fg); }
+.flakes .off { opacity: .22; }
+.app-card .verdict { margin: 12px 0 8px; }
+.app-card .effort { font-size: 13px; margin: 0 0 12px; }
+.alarm-box { display: flex; align-items: center; gap: 10px; background: var(--frost-row); border-radius: 12px; padding: 10px 12px; }
+.alarm-box .big { font-size: 22px; font-weight: 800; }
+.alarm-box small { display: block; color: var(--muted); font-size: 12px; line-height: 1.3; }
+.outlook { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 14px; margin-top: 12px; font-size: 13px; }
+.outlook span { display: flex; gap: 6px; }
+.outlook b { width: 32px; }
+.outlook i { font-style: normal; color: var(--muted); margin-left: auto; }
+.card-caption { text-align: center; font-size: 12px; color: var(--ice-muted); margin: 14px 0 0; }
+
+@media (min-width: 860px) {
+  .hero { padding: 24px 0 96px; }
+  .hero-grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); margin-top: 56px; }
+  .buttons { flex-direction: row; max-width: none; }
+  .hero .btn { flex: 0 0 auto; white-space: nowrap; }
+}
+
+/* ---------- Sections ---------- */
+section { padding: 56px 0 8px; }
+.eyebrow { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+h2 { font-size: clamp(26px, 6vw, 34px); line-height: 1.15; margin: 0 0 12px; letter-spacing: -.01em; }
+h3 { font-size: 18px; margin: 0 0 6px; }
+.lead { color: var(--muted); font-size: 17px; margin: 0 0 28px; max-width: 60ch; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); min-width: 0; }
+
+.features { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 600px) { .features { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 960px) { .features { grid-template-columns: repeat(3, 1fr); } }
+.feature .badge {
+  width: 48px; height: 48px; border-radius: 14px;
+  display: grid; place-items: center;
+  font-size: 26px; margin-bottom: 14px;
+  background: var(--frost-row);
+}
+.feature p { margin: 0; color: var(--muted); font-size: 15px; }
+.feature .mini { margin-top: 12px; }
+
+.steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; counter-reset: s; }
+@media (min-width: 860px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+.steps li { counter-increment: s; position: relative; padding-left: 64px; }
+.steps li::before {
+  content: counter(s);
+  position: absolute; left: 20px; top: 20px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--accent); color: var(--accent-text);
+  display: grid; place-items: center; font-weight: 800; font-size: 15px;
+}
+.steps p { margin: 0; color: var(--muted); font-size: 15px; }
+
+/* Get it */
+.get { display: grid; gap: 14px; }
+@media (min-width: 860px) { .get { grid-template-columns: 1fr 1fr; align-items: start; } }
+.get .card h3 { font-size: 20px; display: flex; align-items: center; gap: 10px; }
+.tag { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+.tag.rec { color: var(--unlikely-fg); background: var(--unlikely-bg); }
+.get .card p { color: var(--muted); margin: 0 0 14px; }
+.get .card p strong { color: var(--text); }
+.btn-solid { background: var(--accent); color: var(--accent-text); }
+.btn-solid:hover { filter: brightness(1.08); }
+.btn-outline { border: 1.5px solid var(--border); color: var(--text); background: transparent; }
+.btn-outline:hover { background: var(--frost-row); }
+.email { font-weight: 700; color: var(--text); }
+.small-note { font-size: 14px; color: var(--muted); margin: 12px 0 0 !important; }
+
+.howto ol { margin: 0; padding-left: 22px; }
+.howto ol li { margin: 0 0 10px; padding-left: 4px; }
+.howto ol li::marker { font-weight: 800; color: var(--accent); }
+.howto .on-phone { display: flex; gap: 10px; align-items: flex-start; background: var(--possible-bg); color: var(--possible-fg); border-radius: 12px; padding: 10px 12px; font-size: 14px; font-weight: 600; margin: 0 0 16px; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; background: var(--frost-row); padding: 1px 6px; border-radius: 6px; }
+
+details { border-top: 1px solid var(--border); }
+details:last-of-type { border-bottom: 1px solid var(--border); }
+summary { cursor: pointer; list-style: none; padding: 16px 32px 16px 0; font-weight: 700; font-size: 17px; position: relative; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; position: absolute; right: 4px; top: 12px; font-size: 24px; font-weight: 400; color: var(--accent); }
+details[open] summary::after { content: "–"; }
+details .body { padding: 0 0 16px; color: var(--text); }
+details .body ul, details .body ol { margin: 0; padding-left: 22px; }
+details .body li { margin-bottom: 8px; }
+details .body p { margin: 0 0 10px; }
+.more { margin-top: 28px; }
+
+.privacy { display: grid; gap: 14px; }
+@media (min-width: 860px) { .privacy { grid-template-columns: 1fr 1fr; } }
+.privacy ul { margin: 0; padding-left: 20px; color: var(--muted); }
+.privacy li { margin-bottom: 8px; }
+.privacy .big-lock { font-size: 40px; line-height: 1; margin-bottom: 10px; }
+
+.support { text-align: center; }
+.support .card { max-width: 640px; margin: 0 auto; padding: 28px 20px; }
+.support p { color: var(--muted); margin: 0 auto 18px; max-width: 48ch; }
+.coffee { display: inline-flex; width: auto; }
+
+/* ---------- Footer ---------- */
+footer { margin-top: 64px; padding: 28px 0 36px; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; }
+.foot { display: flex; flex-wrap: wrap; gap: 16px 28px; align-items: center; justify-content: space-between; }
+.foot .brand { color: var(--text); font-size: 16px; }
+.foot nav { display: flex; flex-wrap: wrap; gap: 10px 22px; }
+.foot nav a { color: var(--text); text-decoration: none; font-weight: 600; }
+.foot nav a:hover { color: var(--accent); }
+.foot .fine { width: 100%; margin: 0; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="topbar">
+      <a class="brand" href="./"><img src="icon.png" alt="" width="34" height="34">Frosty Windows</a>
+      <nav class="topnav" aria-label="Sections">
+        <a class="hide-sm" href="#how-it-works">How it works</a>
+        <a href="#get-it">Install</a>
+        <a class="hide-sm" href="privacy">Privacy</a>
+      </nav>
+    </div>
+
+    <div class="hero-grid">
+      <div>
+        <img class="hero-icon" src="icon.png" alt="Frosty Windows app icon: a car under a snowflake and the moon" width="112" height="112">
+        <h1>Frosty Windows</h1>
+        <p class="pitch">Know the night before if you'll need to clear your car windows before you drive.</p>
+        <div class="buttons">
+          <a class="btn btn-primary" href="mailto:frostywindowsapp@gmail.com?subject=Please%20add%20me%20to%20the%20Frosty%20Windows%20test&amp;body=Hi%2C%0A%0APlease%20add%20me%20to%20the%20Frosty%20Windows%20test%20on%20Google%20Play.%0A%0AThe%20Google%20account%20I%20use%20on%20my%20Android%20phone%20is%3A%20%0A%0A(If%20I'm%20writing%20from%20that%20account%2C%20you%20can%20use%20this%20address.)%0A%0AThanks!">
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm0 2v.4l8 5 8-5V7H4Zm16 2.75-7.47 4.67a1 1 0 0 1-1.06 0L4 9.75V17h16V9.75Z"/></svg>
+            Join the Google Play test
+          </a>
+          <a class="btn btn-secondary" href="https://github.com/user-8472/Frosty-Windows-releases/releases/latest/download/frosty-windows.apk">
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11 3h2v9.17l3.59-3.58L18 10l-6 6-6-6 1.41-1.41L11 12.17V3ZM5 18h14v2H5v-2Z"/></svg>
+            Download for Android (APK)
+          </a>
+        </div>
+        <ul class="chips" aria-label="At a glance">
+          <li>Free</li><li>No ads</li><li>No account</li><li>No tracking</li>
+        </ul>
+        <p class="android-note">Android phones only. There's no iPhone version. <a href="#install-steps" style="color:#C4E2FF">How to install the APK</a></p>
+      </div>
+
+      <div class="demo" aria-hidden="true">
+        <div>
+          <div class="app-card">
+            <div class="row">
+              <span class="place">🚗 Home driveway</span>
+              <span class="when">leave 7:30 AM</span>
+            </div>
+            <div class="verdict"><span class="pill likely"><span class="emoji">❄️</span> Frost likely · 82% chance</span></div>
+            <p class="effort"><strong>Scraping</strong> <span class="flakes">❄❄❄<span class="off">❄❄</span></span> a normal scrape · about 10 min</p>
+            <div class="alarm-box">
+              <span class="emoji" style="font-size:24px">⏰</span>
+              <div><span class="big">6:10 AM</span><small>Alarm moved 10 min earlier to clear the windshield</small></div>
+            </div>
+            <div class="outlook">
+              <span><b>Thu</b> <span class="flakes">❄<span class="off">❄❄❄❄</span></span><i>31%</i></span>
+              <span><b>Fri</b> <span class="flakes">❄❄<span class="off">❄❄❄</span></span><i>54%</i></span>
+              <span><b>Sat</b> <span class="flakes"><span class="off">❄❄❄❄❄</span></span><i>6%</i></span>
+              <span><b>Sun</b> <span class="flakes">❄❄❄❄<span class="off">❄</span></span><i>88%</i></span>
+            </div>
+          </div>
+          <p class="card-caption">An example alert</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="features">
+    <div class="wrap">
+      <p class="eyebrow">Never late because of a frosted windshield</p>
+      <h2>Warned the night before, woken up in time</h2>
+      <p class="lead">Frosty Windows checks the overnight forecast for where your car is parked. If you'll need to scrape frost or ice off it in the morning, it warns you early enough to clear it before you leave.</p>
+      <div class="features">
+        <article class="card feature">
+          <div class="badge emoji">🌙</div>
+          <h3>Night-before heads-up</h3>
+          <p>A notification in the evening tells you whether to expect frost tomorrow morning, so you're not surprised at the car.</p>
+          <div class="mini"><span class="pill possible"><span class="emoji">❄️</span> Frost possible Saturday morning</span></div>
+        </article>
+        <article class="card feature">
+          <div class="badge emoji">⏰</div>
+          <h3>An alarm that moves earlier</h3>
+          <p>On frosty mornings your alarm rings earlier by the time you'll need, through silent mode and over the lock screen. On clear mornings it leaves you alone.</p>
+        </article>
+        <article class="card feature">
+          <div class="badge"><span class="flakes" style="font-size:22px">❄</span></div>
+          <h3>How long scraping will take</h3>
+          <p>From a quick check to snow and ice: the chance you'll need to scrape, and roughly how many minutes clearing is likely to take.</p>
+          <div class="mini" style="font-size:14px"><strong>Scraping</strong> <span class="flakes">❄❄<span class="off">❄❄❄</span></span> a light scrape</div>
+        </article>
+        <article class="card feature">
+          <div class="badge emoji">🔒</div>
+          <h3>Private by design</h3>
+          <p>Free, no ads, no account and no tracking. Your alerts stay on your phone.</p>
+        </article>
+        <article class="card feature">
+          <div class="badge emoji">🏠</div>
+          <h3>Open sky, carport or garage</h3>
+          <p>Parking under cover lowers the chance of frost. Set several alerts for different cars, places or schedules.</p>
+        </article>
+        <article class="card feature">
+          <div class="badge emoji">🧊</div>
+          <h3>Defrosting tips</h3>
+          <p>How to clear the glass quickly, including fog on the inside. Light and dark themes, °F or °C, 12- or 24-hour clock.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="how-it-works">
+    <div class="wrap">
+      <p class="eyebrow">How it works</p>
+      <h2>Set it once, then forget about it</h2>
+      <p class="lead">Temperature, dew point, cloud cover and wind decide whether glass frosts over on a clear night. Frosty Windows watches them for you.</p>
+      <ol class="steps">
+        <li class="card"><h3>Set up an alert</h3><p>Where the car is parked overnight, what time you leave, and on which days.</p></li>
+        <li class="card"><h3>It reads the forecast</h3><p>Each evening it looks at the hour-by-hour forecast: temperature, dew point, cloud cover and wind, the things that decide whether glass frosts over. It re-checks overnight too.</p></li>
+        <li class="card"><h3>You're told in time</h3><p>A heads-up the night before, and on frosty mornings an alarm moved earlier by the time you'll need. With a notification, an alarm, or both.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="get-it">
+    <div class="wrap">
+      <p class="eyebrow">Get Frosty Windows</p>
+      <h2>Two ways to install it</h2>
+      <p class="lead">For Android phones, free either way. Installed it from this page and want Google Play later? Switching keeps your alerts and settings.</p>
+      <div class="get">
+        <div class="card" id="google-play">
+          <h3><span class="emoji">🧪</span> Google Play <span class="tag rec">Testing now</span></h3>
+          <p>Frosty Windows is being tested on Google Play before it's open to everyone. To join the test, email <a class="email" href="mailto:frostywindowsapp@gmail.com?subject=Please%20add%20me%20to%20the%20Frosty%20Windows%20test">frostywindowsapp@gmail.com</a> from <strong>the Google account you use on your Android phone</strong>.</p>
+          <p>You'll get a link back; open it on your phone, tap <strong>Become a tester</strong>, then install Frosty Windows from the Play Store. Google Play keeps it up to date from then on, and it can't be found by searching the Play Store until the test is over.</p>
+          <a class="btn btn-solid" href="mailto:frostywindowsapp@gmail.com?subject=Please%20add%20me%20to%20the%20Frosty%20Windows%20test&amp;body=Hi%2C%0A%0APlease%20add%20me%20to%20the%20Frosty%20Windows%20test%20on%20Google%20Play.%0A%0AThe%20Google%20account%20I%20use%20on%20my%20Android%20phone%20is%3A%20%0A%0A(If%20I'm%20writing%20from%20that%20account%2C%20you%20can%20use%20this%20address.)%0A%0AThanks!">Join the Google Play test</a>
+          <p class="small-note">Already using the copy from this page? Join the test the same way: installing from Google Play keeps your alerts and settings.</p>
+        </div>
+
+        <div class="card howto" id="install-steps">
+          <h3><span class="emoji">📲</span> Install it directly</h3>
+          <p>Prefer not to wait? Install it straight from this page instead. It takes a few extra taps compared with a Play Store app, about two minutes.</p>
+          <div class="on-phone"><span class="emoji">📱</span><span>Do these steps on your Android phone, not on a computer.</span></div>
+          <ol>
+            <li>Tap <a href="https://github.com/user-8472/Frosty-Windows-releases/releases/latest/download/frosty-windows.apk"><strong>Download Frosty Windows</strong></a>.</li>
+            <li>Your browser may warn that the file <strong>might be harmful</strong>. That's shown for any app that doesn't come from the Play Store. Tap <strong>Download anyway</strong>.</li>
+            <li>When the download finishes, tap <strong>Open</strong>. (Missed it? Open the <strong>Files</strong> or <strong>My Files</strong> app, go to <strong>Downloads</strong>, and tap <code>frosty-windows.apk</code>.)</li>
+            <li>If you see <strong>"For your security, your phone isn't allowed to install unknown apps from this source"</strong>: tap <strong>Settings</strong>, switch on <strong>Allow from this source</strong>, then tap the back arrow.</li>
+            <li>Tap <strong>Install</strong>.</li>
+            <li><strong>Google Play Protect</strong> may stop you with a message such as "Unsafe app blocked" or "Send app for scanning?". It says this because it hasn't seen Frosty Windows in the Play Store. Tap <strong>More details</strong>, then <strong>Install anyway</strong>, or tap <strong>Scan app</strong> and then <strong>Install</strong>.</li>
+            <li>Tap <strong>Open</strong>.</li>
+          </ol>
+          <a class="btn btn-outline" href="https://github.com/user-8472/Frosty-Windows-releases/releases/latest/download/frosty-windows.apk">Download for Android (APK)</a>
+        </div>
+      </div>
+
+      <div class="more">
+        <details id="samsung-phones-auto-blocker">
+          <summary>Samsung phones: Auto Blocker</summary>
+          <div class="body">
+            <p>Newer Samsung phones have <strong>Auto Blocker</strong>, which blocks every app that isn't from the Play Store or the Galaxy Store. If the install is blocked and the message mentions Auto Blocker:</p>
+            <ol>
+              <li>Open <strong>Settings</strong> → <strong>Security and privacy</strong> → <strong>Auto Blocker</strong>, and switch it <strong>off</strong>.</li>
+              <li>Install Frosty Windows (the steps above).</li>
+              <li>You can switch Auto Blocker back on afterwards. If a later update is blocked, switch it off again while the update installs.</li>
+            </ol>
+          </div>
+        </details>
+        <details id="set-it-up">
+          <summary>Set it up</summary>
+          <div class="body">
+            <p>The first time it opens, Frosty Windows walks you through setting up an alert: where the car is parked overnight, what time you leave, and on which days. Then it asks for a few permissions so it can warn you on time:</p>
+            <ul>
+              <li><strong>Notifications</strong>: to show frost warnings at all.</li>
+              <li><strong>Alarms &amp; reminders</strong>: so warnings and alarms come at the right minute, not a few minutes late.</li>
+              <li><strong>Full-screen alarms</strong> (only if you choose an alarm): so the alarm can fill the screen over the lock screen, like the Clock app's alarms.</li>
+              <li><strong>Battery: Unrestricted</strong>: so Android doesn't stop the overnight forecast check that decides whether you need to get up earlier.</li>
+            </ul>
+            <p>If any of these are still off, the app's home screen shows a card with a button to fix it.</p>
+          </div>
+        </details>
+        <details id="updates">
+          <summary>Updates</summary>
+          <div class="body">
+            <p>Frosty Windows checks for new versions by itself (<strong>⋮ menu → Settings → Updates</strong>). Updates install over the old version and keep your alerts and settings.</p>
+            <ul>
+              <li>The first time it updates, Android may ask whether Frosty Windows may <strong>install apps</strong>. Switch on <strong>Allow from this source</strong> and go back.</li>
+              <li>Play Protect may ask to scan each new version. Tap <strong>Scan app</strong> or <strong>Install anyway</strong> as above.</li>
+            </ul>
+          </div>
+        </details>
+        <details id="if-something-goes-wrong">
+          <summary>If something goes wrong</summary>
+          <div class="body">
+            <ul>
+              <li><strong>"App not installed"</strong>: an older copy that was installed a different way is in the way. Uninstall Frosty Windows (press and hold its icon → <strong>Uninstall</strong>), then install it again. You'll need to set up your alerts again.</li>
+              <li><strong>Can't find the downloaded file</strong>: open the <strong>Files</strong> (or <strong>My Files</strong>) app → <strong>Downloads</strong>, or in Chrome tap <strong>⋮</strong> → <strong>Downloads</strong>.</li>
+              <li><strong>Opened this page on a computer</strong>: send yourself the link and open it on your phone instead.</li>
+              <li><strong>The alarm didn't ring</strong>: open the app and check the home screen for a card about permissions or battery. Then open an alert, tap <strong>Edit</strong>, and use the test alarm button to hear it.</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="privacy">
+    <div class="wrap">
+      <p class="eyebrow">Privacy</p>
+      <h2>Your alerts stay on your phone</h2>
+      <div class="privacy">
+        <div class="card">
+          <div class="big-lock emoji">🔒</div>
+          <h3>No ads, no account and no tracking</h3>
+          <p style="color:var(--muted);margin:0">Frosty Windows has no server and no account. Your alerts, settings and the forecasts it fetched are stored only on your phone, and uninstalling the app deletes them.</p>
+        </div>
+        <div class="card">
+          <h3>The app only goes online to</h3>
+          <ul>
+            <li>fetch forecasts for the places you set alerts for, from Open-Meteo (and the US National Weather Service for US locations);</li>
+            <li>look up a place name you search for (Open-Meteo), or, if you tap <strong>Use my location</strong>, ask your phone's built-in address lookup (usually Google's) for the name of that spot;</li>
+            <li>check GitHub for new versions of the app.</li>
+          </ul>
+          <a href="privacy"><strong>Read the full privacy policy →</strong></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="support" class="support">
+    <div class="wrap">
+      <div class="card">
+        <div class="emoji" style="font-size:40px;line-height:1;margin-bottom:10px">☕</div>
+        <h2>Support Frosty Windows</h2>
+        <p>Frosty Windows is free, has no ads and doesn't track you, and I plan to keep it that way. If it has saved you from missing your morning coffee, you can buy me one on Ko-fi. Any amount is welcome, and nothing in the app changes either way.</p>
+        <a class="btn btn-solid coffee" href="https://ko-fi.com/frostywindows" rel="noopener">Buy me a coffee on Ko-fi</a>
+        <p class="small-note" style="margin:16px auto 0 !important">Another way to help: tell a friend who's always late on frosty mornings.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a class="brand" href="./"><img src="icon.png" alt="" width="34" height="34">Frosty Windows</a>
+    <nav aria-label="Footer">
+      <a href="privacy">Privacy policy</a>
+      <a href="mailto:frostywindowsapp@gmail.com">frostywindowsapp@gmail.com</a>
+      <a href="https://ko-fi.com/frostywindows" rel="noopener">Support on Ko-fi</a>
+      <a href="https://github.com/user-8472/Frosty-Windows-releases/releases">All releases</a>
+    </nav>
+    <p class="fine">Questions, problems or ideas? Email frostywindowsapp@gmail.com, or in the app: ⋮ menu → Settings → Email Frosty Windows. Forecasts from Open-Meteo and the US National Weather Service.</p>
+  </div>
+</footer>
+
+</body>
+</html>
