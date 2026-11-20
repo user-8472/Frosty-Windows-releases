@@ -210,6 +210,10 @@ h3 { font-size: 18px; margin: 0 0 6px; }
 .tag.rec { color: var(--unlikely-fg); background: var(--unlikely-bg); }
 .get .card p { color: var(--muted); margin: 0 0 14px; }
 .get .card p strong { color: var(--text); }
+.join { list-style: none; padding: 0; margin: 14px 0 6px; display: grid; gap: 16px; counter-reset: j; }
+.join li { padding: 14px; border: 1px solid var(--border); border-radius: 14px; }
+.join li p { margin: 0 0 10px; }
+.join .btn { width: 100%; justify-content: center; box-sizing: border-box; }
 .btn-solid { background: var(--accent); color: var(--accent-text); }
 .btn-solid:hover { filter: brightness(1.08); }
 .btn-outline { border: 1.5px solid var(--border); color: var(--text); background: transparent; }
@@ -275,8 +279,8 @@ footer { margin-top: 64px; padding: 28px 0 36px; border-top: 1px solid var(--bor
         <h1>Frosty Windows</h1>
         <p class="pitch">Know the night before if you'll need to clear your car windows before you drive.</p>
         <div class="buttons">
-          <a class="btn btn-primary" href="mailto:frostywindowsapp@gmail.com?subject=Please%20add%20me%20to%20the%20Frosty%20Windows%20test&amp;body=Hi%2C%0A%0APlease%20add%20me%20to%20the%20Frosty%20Windows%20test%20on%20Google%20Play.%0A%0AThe%20Google%20account%20I%20use%20on%20my%20Android%20phone%20is%3A%20%0A%0A(If%20I'm%20writing%20from%20that%20account%2C%20you%20can%20use%20this%20address.)%0A%0AThanks!">
-            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm0 2v.4l8 5 8-5V7H4Zm16 2.75-7.47 4.67a1 1 0 0 1-1.06 0L4 9.75V17h16V9.75Z"/></svg>
+          <a class="btn btn-primary" href="#google-play">
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
             Join the Google Play test
           </a>
           <a class="btn btn-secondary" href="https://github.com/user-8472/Frosty-Windows-releases/releases/latest/download/frosty-windows.apk">
@@ -381,9 +385,16 @@ footer { margin-top: 64px; padding: 28px 0 36px; border-top: 1px solid var(--bor
       <div class="get">
         <div class="card" id="google-play">
           <h3><span class="emoji">🧪</span> Google Play <span class="tag rec">Testing now</span></h3>
-          <p>Frosty Windows is being tested on Google Play before it's open to everyone. To join the test, email <a class="email" href="mailto:frostywindowsapp@gmail.com?subject=Please%20add%20me%20to%20the%20Frosty%20Windows%20test">frostywindowsapp@gmail.com</a> from <strong>the Google account you use on your Android phone</strong>.</p>
-          <p>You'll get a link back; open it on your phone, tap <strong>Become a tester</strong>, then install Frosty Windows from the Play Store. Google Play keeps it up to date from then on, and it can't be found by searching the Play Store until the test is over.</p>
-          <a class="btn btn-solid" href="mailto:frostywindowsapp@gmail.com?subject=Please%20add%20me%20to%20the%20Frosty%20Windows%20test&amp;body=Hi%2C%0A%0APlease%20add%20me%20to%20the%20Frosty%20Windows%20test%20on%20Google%20Play.%0A%0AThe%20Google%20account%20I%20use%20on%20my%20Android%20phone%20is%3A%20%0A%0A(If%20I'm%20writing%20from%20that%20account%2C%20you%20can%20use%20this%20address.)%0A%0AThanks!">Join the Google Play test</a>
+          <p>Frosty Windows is being tested on Google Play before it's open to everyone. Joining takes three steps, all on your Android phone, signed in with <strong>the Google account you use on that phone</strong>:</p>
+          <ol class="join">
+            <li><p><strong>Join the testers group.</strong> Tap <strong>Join group</strong> on the group's page. You won't get emails from it.</p>
+              <a class="btn btn-solid" href="https://groups.google.com/g/frosty-windows-testers">1 · Join the testers group</a></li>
+            <li><p><strong>Become a tester.</strong> On Google's test page, tap <strong>Become a tester</strong>.</p>
+              <a class="btn btn-solid" href="https://play.google.com/apps/testing/com.frostywindows.app">2 · Become a tester</a></li>
+            <li><p><strong>Install it</strong> from the Play Store. Google Play keeps it up to date from then on. It can't be found by searching the Play Store until the test is over.</p>
+              <a class="btn btn-solid" href="https://play.google.com/store/apps/details?id=com.frostywindows.app">3 · Install from Google Play</a></li>
+          </ol>
+          <p class="small-note">Stuck? Email <a class="email" href="mailto:frostywindowsapp@gmail.com?subject=Frosty%20Windows%20test">frostywindowsapp@gmail.com</a> with the Google account on your phone and you'll be added by hand.</p>
           <p class="small-note">Already using the copy from this page? Join the test the same way: installing from Google Play keeps your alerts and settings.</p>
         </div>
 
