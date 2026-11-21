@@ -228,6 +228,7 @@ h3 { font-size: 18px; margin: 0 0 6px; }
 code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; background: var(--frost-row); padding: 1px 6px; border-radius: 6px; }
 
 details { border-top: 1px solid var(--border); }
+.trouble { margin-top: 18px; }
 details:last-of-type { border-bottom: 1px solid var(--border); }
 summary { cursor: pointer; list-style: none; padding: 16px 32px 16px 0; font-weight: 700; font-size: 17px; position: relative; }
 summary::-webkit-details-marker { display: none; }
@@ -394,7 +395,23 @@ footer { margin-top: 64px; padding: 28px 0 36px; border-top: 1px solid var(--bor
             <li><p><strong>Install it</strong> from the Play Store. Google Play keeps it up to date from then on. It can't be found by searching the Play Store until the test is over.</p>
               <a class="btn btn-solid" href="https://play.google.com/store/apps/details?id=com.frostywindows.app">3 · Install from Google Play</a></li>
           </ol>
-          <p class="small-note">Stuck? Email <a class="email" href="mailto:frostywindowsapp@gmail.com?subject=Frosty%20Windows%20test">frostywindowsapp@gmail.com</a> with the Google account on your phone and you'll be added by hand.</p>
+          <details class="trouble" id="join-trouble">
+            <summary>Trouble getting set up?</summary>
+            <div class="body">
+              <p><strong>Step 3 says "Item not found", or Frosty Windows isn't there.</strong> This is usually because the Play Store is using a different Google account from the one you used in steps 1 and 2. Many phones have more than one.</p>
+              <ol>
+                <li>Open the <strong>Play Store</strong> app and tap your <strong>profile picture</strong> at the top right.</li>
+                <li>Switch to the account you used for steps 1 and 2.</li>
+                <li>Come back here and tap <strong>3 · Install from Google Play</strong> again.</li>
+              </ol>
+              <p>Rather keep the Play Store on its current account? Do steps 1 and 2 again with that account instead. On the group page and the test page, tap the profile picture at the top right to switch accounts.</p>
+              <p><strong>You've only just done step 2.</strong> Google can take a few minutes, occasionally a few hours, before a new tester can see the app. Wait a little, then try step 3 again. The "Become a tester" page also shows a <strong>download it on Google Play</strong> link once you've joined, which goes to the same place.</p>
+              <p><strong>Step 1 shows "You don't have permission" or no Join group button.</strong> Sign in to Google in your browser first, using the account the Play Store uses, then tap step 1 again.</p>
+              <p><strong>Step 2 says you can't join, or there's no Become a tester button.</strong> Do step 1 first: the test page only works for members of the group. If you've just joined, wait a minute and reload the page.</p>
+              <p><strong>"This item isn't available in your country."</strong> For now the test is open in the United States only. You can still use <a href="#install-steps">Install it directly</a> below.</p>
+            </div>
+          </details>
+          <p class="small-note">Still stuck? Email <a class="email" href="mailto:frostywindowsapp@gmail.com?subject=Frosty%20Windows%20test">frostywindowsapp@gmail.com</a> with the Google account on your phone and you'll be added by hand.</p>
           <p class="small-note">Already using the copy from this page? Join the test the same way: installing from Google Play keeps your alerts and settings.</p>
         </div>
 
