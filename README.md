@@ -114,10 +114,14 @@ online to:
 
 - get forecasts for your alerts' places from Open-Meteo (and, as a backup, from the US National
   Weather Service);
-- look up a place name you search for (Open-Meteo), or, if you tap **Use my current location**, ask your
-  phone's built-in address lookup (usually Google's) for the name of that spot;
+- look up a place name you search for (Open-Meteo); a street address you type, or the nearest address
+  to a map pin, from your phone's built-in address lookup (usually Google's); or, if you tap **Use my
+  current location**, the name of that spot from the same lookup;
+- show the map, if you tap **Pick on a map** (map pictures from OpenFreeMap, made from OpenStreetMap);
 - check GitHub for new versions of the app, and download them (the copy installed from this page
-  only).
+  only);
+- send the developer a crash report, a problem report or beta results, only when you choose to send
+  one.
 
 The full details: [Privacy policy](https://user-8472.github.io/Frosty-Windows-releases/privacy).
 
